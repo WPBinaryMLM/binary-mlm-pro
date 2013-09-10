@@ -192,6 +192,7 @@ else
 								<input type="text" name="name" id="name" size="30" value="" class="text-input"/>
 								<input type="hidden" name="wint_id" id="memberid" value="<?php _e($memberId); ?>"/>
 								<input type="hidden" name="pay_id" id="payoutid" value="<?php _e($payoutId); ?>"/>
+								<input type="hidden" name="total_amt" id="total_amt" value="<?php _e($detailArr['capped_amt'])?>" />
 								<input type="submit" name="submit" class="button" id="submit_btn" value="<?php _e('Initiate withdrawal','binary-mlm-pro')?>" />
 						</fieldset>
 					</form>
@@ -217,7 +218,8 @@ else
 					var name = $("input#name").val();
 					var memberid=$('#memberid').val();
 					var payoutid=$('#payoutid').val();
-					var dataString = 'name='+ name + '&wint_id=' + memberid + '&pay_id=' + payoutid;
+					var total_amt=$('#total_amt').val();
+					var dataString = 'name='+ name + '&wint_id=' + memberid + '&pay_id=' + payoutid +'&total_amt='+total_amt;
 
 					$.ajax({
 						type: "POST",
