@@ -4,7 +4,7 @@ session_start();
 Plugin Name: Binary MLM Pro
 Plugin URI: http://tradebooster.com
 Description: The only Binary MLM plugin for Wordpress. Run a full blown MLM website from within your favourite CMS. 
-Version: 2.5
+Version: 2.6
 Author: Tradebooster
 Author URI: http://tradebooster.com
 License: GPL
@@ -17,7 +17,7 @@ License: GPL
  * @package GithubUpdater
  * @author Joachim Kudish @link http://jkudish.com
  * @since 1.3
- * @version 2.5
+ * @version 2.6
  */
  
  
@@ -486,7 +486,7 @@ function fb_redirect_2()
 function myplugin_load_textdomain() {
  	 load_plugin_textdomain( 'binary-mlm-pro', NULL, '/binary-mlm-pro/languages/' ); 
 	}
-$new_version = '2.5';
+$new_version = '2.6';
 if (get_option(MYPLUGIN_VERSION_KEY) != $new_version) { 
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
