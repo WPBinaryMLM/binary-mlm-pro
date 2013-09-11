@@ -352,29 +352,6 @@ add_action('admin_notices', 'show_message_after_plugin_activation');
 function mlm_remove()
 {
 	mlm_core_drop_tables();
-	//$mlmPages contain the meta_key of the created mlm plugin pages
-$mlmPages = array('mlm_registration_page',
-            'mlm_network_page',
-            'mlm_network_genealogy_page',
-            'mlm_network_details_page', 
-            'mlm_left_group_details_page',
-            'mlm_right_group_details_page',
-            'mlm_personal_group_details_page',
-            'mlm_consultant_details_page',
-            'mlm_my_payout_page',
-            'mlm_my_payout_details_page',
-            'mlm_update_profile_page', 
-            'mlm_change_password_page', 
-            'mlm_distribute_bonus', 
-            'mlm_distribute_commission',
-			'mlm_epin_update_page'
-            );
-//delete post from wp_posts and wp_postmeta table
-	foreach($mlmPages as $value)
-	{
-		$post_id = get_post_id($value);
-		wp_delete_post( $post_id, true );
-	}
 	//delete the data from wp_options table
 	delete_option('wp_mlm_general_settings'); 
 	delete_option('wp_mlm_eligibility_settings'); 
@@ -384,9 +361,6 @@ $mlmPages = array('mlm_registration_page',
 	$theme_slug = get_option( 'stylesheet' );
 	delete_option("theme_mods_$theme_slug");
 	//delete the menu name form wp_terms table
-	$term = get_term_by( 'name', MENU_NAME, 'nav_menu' ) ;
-	wp_delete_term( $term->term_id, 'nav_menu');
-	
 }
 
 function mlm_deactivate(){
@@ -586,20 +560,26 @@ function myplugin_load_textdomain() {
  	 load_plugin_textdomain( 'binary-mlm-pro', NULL, '/binary-mlm-pro/languages/' ); 
 	}
 $new_version = '2.6';
-$run_once = get_option('menu_check');
 if (get_option(MYPLUGIN_VERSION_KEY) != $new_version) { 
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
 		add_action('init', 'createPages'); 
-                if (!$run_once)add_action('init', 'createTheMlmMenu');
+                update_option('menu_check',0);
+                $run_once = get_option('menu_check');
+                if (!$run_once){
+                    $term = get_term_by( 'name', MENU_NAME, 'nav_menu' ) ;
+                    wp_delete_term( $term->term_id, 'nav_menu');
+                    add_action('init', 'createTheMlmMenu'); 
+                }
 		//add_action( 'init', 'register_shortcodes');
 		update_option(MYPLUGIN_VERSION_KEY, $new_version);
-		}
+        }
 if (get_option(MYPLUGIN_VERSION_KEY) == $new_version) { 
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
 		add_action('init', 'createPages'); 
-                if (!$run_once)add_action('init', 'createTheMlmMenu');
+                $run_once = get_option('menu_check');
+                if (!$run_once)add_action('init', 'createTheMlmMenu'); 
 		update_option(MYPLUGIN_VERSION_KEY, $new_version); 
 	}
 
