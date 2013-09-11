@@ -10,18 +10,6 @@ Author URI: http://tradebooster.com
 License: GPL
 */
 
-/**
- * Note: the version # above is purposely low in order to be able to test the updater
- * The real version # is below
- *
- * @package GithubUpdater
- * @author Joachim Kudish @link http://jkudish.com
- * @since 1.3
- * @version 2.5
- */
- 
- 
-
 // Exit if accessed directly
 if(!defined('ABSPATH'))
 	exit;
@@ -573,13 +561,15 @@ if (get_option(MYPLUGIN_VERSION_KEY) != $new_version) {
                 }
 		//add_action( 'init', 'register_shortcodes');
 		update_option(MYPLUGIN_VERSION_KEY, $new_version);
-        }
-if (get_option(MYPLUGIN_VERSION_KEY) == $new_version) { 
+		}
+//
+//if (get_option(MYPLUGIN_VERSION_KEY) == $new_version) {
+else {
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
 		add_action('init', 'createPages'); 
                 $run_once = get_option('menu_check');
-                if (!$run_once)add_action('init', 'createTheMlmMenu'); 
+                if (!$run_once) add_action('init', 'createTheMlmMenu'); 
 		update_option(MYPLUGIN_VERSION_KEY, $new_version); 
 	}
 
