@@ -462,89 +462,7 @@ function fb_redirect_2()
 			unset($_SESSION['ajax']);
  	}
  	
-/************ Create Epin Menu Update ****************/
-function ePinUpdateMenu()
-{
-	$page_title['profile'][] = MLM_EPIN_UPDATE_TITLE;
-	
-	//name of the menu
-	$name = MENU_NAME;
-	
-    //create the menu
-    $menu_id = wp_create_nav_menu($name);
-	
-	//get the term id
- 	 $menu = get_term_by( 'name', $name, 'nav_menu' );
-	
- 	foreach($page_title as $value)
-	{
-		//get the post_id by the page title
-		$myPage = get_page_by_title($value[0]);
-		
-		//build the menu item array
-		$args = array();
-		$args['menu-item-db-id'] = 0;
-		$args['menu-item-object-id'] = $myPage->ID;
-		$args['menu-item-object'] = 'page';
-		$args['menu-item-parent-id'] = 0;
-		$args['menu-item-position'] ='';
-		$args['menu-item-type'] = 'post_type';
-		$args['menu-item-title'] = $value[0];
-		$args['menu-item-description'] = '';
-		$args['menu-item-status'] = 'publish';
-		$args['menu-item-attr-title'] = '';
-		$args['menu-item-target'] = '';
-		$args['menu-item-classes'] = '';
-		$args['menu-item-xfn'] = '';
-		
-		//create the menu item
-		 $menu_item_id = wp_update_nav_menu_item($menu->term_id, 0, $args); 
-		
-		if(count($value) >= 1)
-		{ 
-			for($i = 1; $i < count($value)+1; $i++)
-			{  $j=$i-1;
-				//get the post_id by the page title
-				$myPage = get_page_by_title($value[$j]);
-				
-				//build the menu item array
-				$args = array();
-				$args['menu-item-db-id'] = 0;
-				$args['menu-item-object-id'] = $myPage->ID;
-				$args['menu-item-object'] = 'page';
-				$args['menu-item-parent-id'] = $menu_item_id;
-				$args['menu-item-position'] ='';
-				$args['menu-item-type'] = 'post_type';
-				$args['menu-item-title'] = $value[$j];
-				$args['menu-item-description'] = '';
-				$args['menu-item-status'] = 'publish';
-				$args['menu-item-attr-title'] = '';
-				$args['menu-item-target'] = '';
-				$args['menu-item-classes'] = '';
-				$args['menu-item-xfn'] = '';
-				
-				//create the menu item
-				echo $item_id = wp_update_nav_menu_item($menu->term_id, 0, $args); die;
-			}
-		}
-	}
-	update_option('menu_check',true);
-	
-	$primary_menu = array
-					(
-						"nav_menu_locations" => array
-							(
-								"primary" => $menu_id,
-								"primary_".PLUGIN_NAME => 0
-							)
-					
-					);
-	$theme_slug = get_option( 'stylesheet' );
-	update_option("theme_mods_$theme_slug", $primary_menu);
-} 	
- 	
- 	
-/************ Create Epin Menu Update ****************/
+
 
 function myplugin_load_textdomain() {
  	 load_plugin_textdomain( 'binary-mlm-pro', NULL, '/binary-mlm-pro/languages/' ); 
@@ -554,13 +472,7 @@ if (get_option(MYPLUGIN_VERSION_KEY) != $new_version) {
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
 		add_action('init', 'createPages'); 
-                update_option('menu_check',0);
-                $run_once = get_option('menu_check');
-                if (!$run_once){
-                    $term = get_term_by( 'name', MENU_NAME, 'nav_menu' ) ;
-                    wp_delete_term( $term->term_id, 'nav_menu');
-                    add_action('init', 'createTheMlmMenu'); 
-                }
+                
 		//add_action( 'init', 'register_shortcodes');
 		update_option(MYPLUGIN_VERSION_KEY, $new_version);
 		}
