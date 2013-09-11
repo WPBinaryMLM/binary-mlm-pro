@@ -4,8 +4,8 @@ Donate link:
 Tags: MLM, multi level marketing, network marketing, binary network, binary MLM
 Requires at least: 3.3
 Tested up to: 3.5.2
-Stable tag: 2.5
-~Current Version:2.5~
+Stable tag: 2.6
+~Current Version:2.6~
 
 The only Plugin to run a full blown Binary MLM network inside your  favourite CMS - Wordpress.
 
