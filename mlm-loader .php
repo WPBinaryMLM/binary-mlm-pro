@@ -4,7 +4,7 @@ session_start();
 Plugin Name: Binary MLM Pro
 Plugin URI: http://tradebooster.com
 Description: The only Binary MLM plugin for Wordpress. Run a full blown MLM website from within your favourite CMS. 
-Version: 2.6
+Version: 2.5
 Author: Tradebooster
 Author URI: http://tradebooster.com
 License: GPL
@@ -17,7 +17,7 @@ License: GPL
  * @package GithubUpdater
  * @author Joachim Kudish @link http://jkudish.com
  * @since 1.3
- * @version 2.6
+ * @version 2.5
  */
  
  
@@ -347,7 +347,11 @@ function mlm_install()
 //shows custom message after plugin activation
 add_action('admin_notices', 'show_message_after_plugin_activation');
 
-//$mlmPages contain the meta_key of the created mlm plugin pages
+
+function mlm_remove()
+{
+	mlm_core_drop_tables();
+	//$mlmPages contain the meta_key of the created mlm plugin pages
 $mlmPages = array('mlm_registration_page',
             'mlm_network_page',
             'mlm_network_genealogy_page',
@@ -365,9 +369,6 @@ $mlmPages = array('mlm_registration_page',
 			'mlm_epin_update_page'
             );
 //delete post from wp_posts and wp_postmeta table
-function mlm_remove($mlmPages)
-{
-	mlm_core_drop_tables();
 	foreach($mlmPages as $value)
 	{
 		$post_id = get_post_id($value);
@@ -387,8 +388,26 @@ function mlm_remove($mlmPages)
 	
 }
 
-function mlm_deactivate($mlmPages){
+function mlm_deactivate(){
 	//delete post from wp_posts and wp_postmeta table
+	//$mlmPages contain the meta_key of the created mlm plugin pages
+$mlmPages = array('mlm_registration_page',
+            'mlm_network_page',
+            'mlm_network_genealogy_page',
+            'mlm_network_details_page', 
+            'mlm_left_group_details_page',
+            'mlm_right_group_details_page',
+            'mlm_personal_group_details_page',
+            'mlm_consultant_details_page',
+            'mlm_my_payout_page',
+            'mlm_my_payout_details_page',
+            'mlm_update_profile_page', 
+            'mlm_change_password_page', 
+            'mlm_distribute_bonus', 
+            'mlm_distribute_commission',
+			'mlm_epin_update_page'
+            );
+//delete post from wp_posts and wp_postmeta table
 	foreach($mlmPages as $value)
 	{
 		$post_id = get_post_id($value);
@@ -486,7 +505,7 @@ function fb_redirect_2()
 function myplugin_load_textdomain() {
  	 load_plugin_textdomain( 'binary-mlm-pro', NULL, '/binary-mlm-pro/languages/' ); 
 	}
-$new_version = '2.6';
+$new_version = '2.5';
 if (get_option(MYPLUGIN_VERSION_KEY) != $new_version) { 
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
