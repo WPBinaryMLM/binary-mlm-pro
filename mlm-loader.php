@@ -565,8 +565,8 @@ if (get_option(MYPLUGIN_VERSION_KEY) != $new_version) {
 		update_option(MYPLUGIN_VERSION_KEY, $new_version);
 		}
 //
-//if (get_option(MYPLUGIN_VERSION_KEY) == $new_version) {
-else {
+if (get_option(MYPLUGIN_VERSION_KEY) == $new_version) {
+
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
 		add_action('init', 'createPages'); 
