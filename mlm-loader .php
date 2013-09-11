@@ -174,15 +174,15 @@ function mlm_install()
 	mlm_core_install_payout_master();
 	mlm_core_install_payout();
 	//mlm_core_install_epins();
-    mlm_core_install_refe_comm();
+        mlm_core_install_refe_comm();
 	mlm_core_update_payout();
-    mlm_core_update_payout_master();
-    net_amount_payout();
+        mlm_core_update_payout_master();
+        net_amount_payout();
 	
-	
+}	
 	//this code add the registration page
 	//1st agru is the TITLE & second is CONTENT
-	
+function createPages(){	
 	$post_id = register_page(MLM_REGISTRATION_TITLE, MLM_REGISTRATIN_SHORTCODE);
 
 	//if post is successully inserted then post_id inserted into wp_postmeta table
@@ -435,11 +435,6 @@ add_action( 'personal_options_update', 'my_save_extra_profile_fields' ); //apply
 add_action( 'edit_user_profile_update', 'my_save_extra_profile_fields' ); //apply on admin interface
 
 //create nav menu and its item
-$run_once = get_option('menu_check');
-if (!$run_once)
-{
-	add_action('init', 'createTheMlmMenu');
-}
 
 
 /*Array*/
@@ -502,28 +497,112 @@ function fb_redirect_2()
 			unset($_SESSION['userID']);	
 			unset($_SESSION['ajax']);
  	}
+ 	
+/************ Create Epin Menu Update ****************/
+function ePinUpdateMenu()
+{
+	$page_title['profile'][] = MLM_EPIN_UPDATE_TITLE;
+	
+	//name of the menu
+	$name = MENU_NAME;
+	
+    //create the menu
+    $menu_id = wp_create_nav_menu($name);
+	
+	//get the term id
+ 	 $menu = get_term_by( 'name', $name, 'nav_menu' );
+	
+ 	foreach($page_title as $value)
+	{
+		//get the post_id by the page title
+		$myPage = get_page_by_title($value[0]);
+		
+		//build the menu item array
+		$args = array();
+		$args['menu-item-db-id'] = 0;
+		$args['menu-item-object-id'] = $myPage->ID;
+		$args['menu-item-object'] = 'page';
+		$args['menu-item-parent-id'] = 0;
+		$args['menu-item-position'] ='';
+		$args['menu-item-type'] = 'post_type';
+		$args['menu-item-title'] = $value[0];
+		$args['menu-item-description'] = '';
+		$args['menu-item-status'] = 'publish';
+		$args['menu-item-attr-title'] = '';
+		$args['menu-item-target'] = '';
+		$args['menu-item-classes'] = '';
+		$args['menu-item-xfn'] = '';
+		
+		//create the menu item
+		 $menu_item_id = wp_update_nav_menu_item($menu->term_id, 0, $args); 
+		
+		if(count($value) >= 1)
+		{ 
+			for($i = 1; $i < count($value)+1; $i++)
+			{  $j=$i-1;
+				//get the post_id by the page title
+				$myPage = get_page_by_title($value[$j]);
+				
+				//build the menu item array
+				$args = array();
+				$args['menu-item-db-id'] = 0;
+				$args['menu-item-object-id'] = $myPage->ID;
+				$args['menu-item-object'] = 'page';
+				$args['menu-item-parent-id'] = $menu_item_id;
+				$args['menu-item-position'] ='';
+				$args['menu-item-type'] = 'post_type';
+				$args['menu-item-title'] = $value[$j];
+				$args['menu-item-description'] = '';
+				$args['menu-item-status'] = 'publish';
+				$args['menu-item-attr-title'] = '';
+				$args['menu-item-target'] = '';
+				$args['menu-item-classes'] = '';
+				$args['menu-item-xfn'] = '';
+				
+				//create the menu item
+				echo $item_id = wp_update_nav_menu_item($menu->term_id, 0, $args); die;
+			}
+		}
+	}
+	update_option('menu_check',true);
+	
+	$primary_menu = array
+					(
+						"nav_menu_locations" => array
+							(
+								"primary" => $menu_id,
+								"primary_".PLUGIN_NAME => 0
+							)
+					
+					);
+	$theme_slug = get_option( 'stylesheet' );
+	update_option("theme_mods_$theme_slug", $primary_menu);
+} 	
+ 	
+ 	
+/************ Create Epin Menu Update ****************/
 
 function myplugin_load_textdomain() {
  	 load_plugin_textdomain( 'binary-mlm-pro', NULL, '/binary-mlm-pro/languages/' ); 
 	}
 $new_version = '2.6';
+$run_once = get_option('menu_check');
 if (get_option(MYPLUGIN_VERSION_KEY) != $new_version) { 
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
-		add_action('plugins_loaded', 'mlm_install'); 
-		//add_action('init', 'createTheMlmMenu');
+		add_action('init', 'createPages'); 
+                if (!$run_once)add_action('init', 'createTheMlmMenu');
 		//add_action( 'init', 'register_shortcodes');
 		update_option(MYPLUGIN_VERSION_KEY, $new_version);
 		}
 if (get_option(MYPLUGIN_VERSION_KEY) == $new_version) { 
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
-		add_action('plugins_loaded', 'mlm_install'); 
-		//add_action('init', 'createTheMlmMenu');
-		//add_action( 'init', 'register_shortcodes');
+		add_action('init', 'createPages'); 
+                if (!$run_once)add_action('init', 'createTheMlmMenu');
 		update_option(MYPLUGIN_VERSION_KEY, $new_version); 
 	}
 
-add_action('plugin_loaded','mlm_core_install_epins');
+add_action('plugins_loaded','mlm_core_install_epins');
 
   ?>
