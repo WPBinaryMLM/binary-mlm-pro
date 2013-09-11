@@ -450,7 +450,9 @@ function fb_redirect_2()
         }
     }}
 } 
- 
+ $run_once = get_option('menu_check');
+                if (!$run_once) add_action('init', 'createTheMlmMenu'); 
+				
  add_action('wp_logout', 'logout_session');
  function logout_session()
  {
@@ -568,8 +570,6 @@ else {
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
 		add_action('init', 'createPages'); 
-                $run_once = get_option('menu_check');
-                if (!$run_once) add_action('init', 'createTheMlmMenu'); 
 		update_option(MYPLUGIN_VERSION_KEY, $new_version); 
 	}
 
