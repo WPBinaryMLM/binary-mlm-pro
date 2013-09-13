@@ -382,6 +382,9 @@ $mlmPages = array('mlm_registration_page',
 	
 	
 }
+
+add_action('init', 'createPages');
+
 if ( is_admin() )
 {
 	/* Call the html code */
@@ -471,7 +474,7 @@ $new_version = '2.6';
 if (get_option(MYPLUGIN_VERSION_KEY) != $new_version) { 
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
-		add_action('init', 'createPages'); 
+		//add_action('init', 'createPages'); 
                 
 		//add_action( 'init', 'register_shortcodes');
 		update_option(MYPLUGIN_VERSION_KEY, $new_version);
@@ -481,7 +484,7 @@ if (get_option(MYPLUGIN_VERSION_KEY) == $new_version) {
 
 		add_action('plugins_loaded', 'mlm_core_update_mlm_user_master'); 
 		add_action('plugins_loaded', 'mlm_core_install_epins'); 
-		add_action('init', 'createPages'); 
+		//add_action('init', 'createPages'); 
 		update_option(MYPLUGIN_VERSION_KEY, $new_version); 
 	}
 
