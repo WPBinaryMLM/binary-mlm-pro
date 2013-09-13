@@ -462,7 +462,7 @@ function fb_redirect_2()
 			unset($_SESSION['ajax']);
  	}
  	
-
+add_action('plugins_loaded', 'myplugin_load_textdomain');
 
 function myplugin_load_textdomain() {
  	 load_plugin_textdomain( 'binary-mlm-pro', NULL, '/binary-mlm-pro/languages/' ); 
